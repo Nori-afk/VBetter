@@ -5,48 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VBETTER - Veterinary Dashboard</title>
     <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="/Vet-side/CSS/sideBar.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/Vet-side/JS/sidebar.js"></script>
+
 </head>
 <body>
     <div class="MainContainer">
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="sidebar-header">
+                <button type="button" class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar menu">☰</button>
                 <div class="logo"><img src="../Images/logo.png" alt="VBETTER Logo"></div>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" title="Dashboard">
-                    <img src="/Vet-side/Images/home.png" class="nav-icon">
+                    <img src="/Vet-side/Images/home.png" class="nav-icon" alt="Dashboard-icon">
                     <span class="nav-label">Dashboard</span>
                 </a>
-                <a href="#" class="nav-item" title="Patients">
-                    <img src="/Vet-side/Images/paw.svg" class="nav-icon">
+                <a href="appointment.html" class="nav-item" title="Patients">
+                    <img src="/Vet-side/Images/paw.svg" class="nav-icon" alt="Patient_record-icon">
                     <span class="nav-label">Appointment Management</span>
                 </a>
                 <a href="#" class="nav-item" title="Appointments">
-                    <img src="/Vet-side/Images/n.svg" class="nav-icon">
+                    <img src="/Vet-side/Images/n.svg" class="nav-icon" alt="Appointment-icon">
                     <span class="nav-label">Patient Records</span>
                 </a>
                 <a href="#" class="nav-item" title="Reports">
-                    <img src="/Vet-side/Images/graph.svg" class="nav-icon">
+                    <img src="/Vet-side/Images/graph.svg" class="nav-icon" alt="Reports-icon">
                     <span class="nav-label">Report</span>
                 </a>
                  <a href="#" class="nav-item" title="Disease_Analytics">
-                    <img src="/Vet-side/Images/graph2.svg" class="nav-icon">
+                    <img src="/Vet-side/Images/graph2.svg" class="nav-icon" alt="Disease Analytics-logo ">
                     <span class="nav-label">Disease Analytics</span>
                 </a>
                   <a href="#" class="nav-item" title="lost_&_found">
-                    <img src="/Vet-side/Images/lostandFound.svg" class="nav-icon">
+                    <img src="/Vet-side/Images/lostandFound.svg" class="nav-icon" alt="Lost and Found-logo" >
                     <span class="nav-label">Lost And Found</span>
                 </a>
                   <a href="#" class="nav-item" title="chatbot_insights">
-                    <img src="/Vet-side/Images/chatbot.svg" class="nav-icon">
+                    <img src="/Vet-side/Images/chatbot.svg" class="nav-icon" alt="Chatbot-logo">
                     <span class="nav-label">Chatbot Management</span>
                 </a>
                   <a href="#" class="nav-item" title="Mass_Vaccine">
-                    <img src="/Vet-side/Images/vaccine.svg" class="nav-icon">
+                    <img src="/Vet-side/Images/vaccine.svg" class="nav-icon" alt="Vaccine-logo">
                     <span class="nav-label">Mass Vaccination</span>
                 </a>
             </nav>
@@ -69,13 +73,13 @@
                 <div class="rightSide">
                     <div class="iconheader">
                         <button class="icon-btn">
-                            <img src="/Vet-side/Images/notif.png">
+                            <img src="/Vet-side/Images/notif.png" alt="Notifications">
                         </button>
                         <button class="icon-btn">
-                           <img src="/Vet-side/Images/setting.png">
+                           <img src="/Vet-side/Images/setting.png" alt="Settings">
                         </button>
                         <button class="icon-btn">
-                                 <img src="/Vet-side/Images/aboutus.png">
+                                 <img src="/Vet-side/Images/aboutus.png" alt="About Us">
                         </button>
                     </div>
                     <div class="header-divider"></div>
@@ -86,6 +90,7 @@
                 </div>
             </div>
 
+            <div id="dashboard-content">
             <!-- GREETING SECTION -->
             <div class="Greetings">
                 <h1>Good Day, Dr. Igaya!</h1>
@@ -328,8 +333,12 @@
                 </div>
             </div>
         </div>
+
+        <div id="module-content" hidden></div>
     </div>
 
+    
     <script src="../JS/index.js"></script>
+   
 </body>
 </html>
