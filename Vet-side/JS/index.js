@@ -243,36 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebar) {
-        sidebar.addEventListener('click', function() {
-            if (window.innerWidth > 768) {
-                sidebar.classList.toggle('expanded');
-            }
-        });
-    }
-  
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            navItems.forEach(nav => nav.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-
-    // Tab switching
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            tabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-           
-            console.log('Tab changed to:', this.textContent);
-        });
-    });
+ 
 
     // Add appointment button
     const addAppointmentBtn = document.querySelector('.btn-add-appointment');
