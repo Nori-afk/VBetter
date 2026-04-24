@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VBetter - chatbot management</title>
+    <script src="/Vet-side/JS/sidebar.js"></script>
+    <link rel="stylesheet" href="/Vet-side/CSS/ChatbotManagement.css">
+    <link rel="stylesheet" href="/Vet-side/CSS/sideBar.css">
+    <script
+src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0">
+</script>
+</head>
+<body>
+    <div class="main-holder">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><img src="../Images/logo.png" alt="VBETTER Logo"></div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item active" title="Dashboard">
+                    <img src="/Vet-side/Images/home.png" class="nav-icon" alt="Dashboard-icon">
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="appointment.html" class="nav-item" title="Patients">
+                    <img src="/Vet-side/Images/paw.svg" class="nav-icon" alt="Patient_record-icon">
+                    <span class="nav-label">Appointment Management</span>
+                </a>
+                <a href="patientRecords.html" class="nav-item" title="Appointments">
+                    <img src="/Vet-side/Images/n.svg" class="nav-icon" alt="Appointment-icon">
+                    <span class="nav-label">Patient Records</span>
+                </a>
+                <a href="#" class="nav-item" title="Reports">
+                    <img src="/Vet-side/Images/graph.svg" class="nav-icon" alt="Reports-icon">
+                    <span class="nav-label">Report</span>
+                </a>
+                 <a href="#" class="nav-item" title="Disease_Analytics">
+                    <img src="/Vet-side/Images/graph2.svg" class="nav-icon" alt="Disease Analytics-logo ">
+                    <span class="nav-label">Disease Analytics</span>
+                </a>
+                  <a href="#" class="nav-item" title="lost_&_found">
+                    <img src="/Vet-side/Images/lostandFound.svg" class="nav-icon" alt="Lost and Found-logo" >
+                    <span class="nav-label">Lost And Found</span>
+                </a>
+                  <a href="#" class="nav-item" title="chatbot_insights">
+                    <img src="/Vet-side/Images/chatbot.svg" class="nav-icon" alt="Chatbot-logo">
+                    <span class="nav-label">Chatbot Management</span>
+                </a>
+                  <a href="#" class="nav-item" title="Mass_Vaccine">
+                    <img src="/Vet-side/Images/vaccine.svg" class="nav-icon" alt="Vaccine-logo">
+                    <span class="nav-label">Mass Vaccination</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic">
+                <span class="nav-label">Mass Vaccination</span>
+            </div>
+        </div>
+        <div class="content-holder">
+            <div class="header">
+                <h2>Chatbot Management</h2>
+                <p>You can view, and analyze the visualization that comes from consultation online</p>
+            </div>
+            <div class="Menu-holder">
+               <button id="Home" class="no-border"><div class="Menu active">Home</div></button> 
+               <button id="Inquiry"><div class="Menu not-active">Inquiry Management</div></button> 
+               <button id="consultation"> <div class="Menu not-active">Consultation Management</div></button>
+            </div>
+            <div class="KPI-holder">
+                <div class="KPI-card">
+                    <div class="KPI-header">
+                    <p>Total Online Consultations</p>
+                    <img src="/Vet-side/Images/info.svg" alt="icon">
+                    </div>
+                    <h2 id="value-online-consult">120</h2>
+                    <p class="is-positive">2% higher Compared last Month</p>
+                </div>
+                  <div class="KPI-card">
+                    <div class="KPI-header">
+                    <p>Total Online Inquiry</p>
+                    <img src="/Vet-side/Images/info.svg" alt="icon">
+                    </div>
+                    <h2 id="value-online-inquiry">50</h2>
+                    <p class="is-negative">-2% Lower Compared last Month</p>
+                </div>
+                <div class="KPI-card">
+                    <div class="KPI-header">
+                    <p>Most Common Symptom</p>
+                    <img src="/Vet-side/Images/info.svg" alt="icon">
+                    </div>
+                    <h2 id="value-most-common-symptom">Fever (32 cases/Chats)</h2>
+                    <p class="is-positive">Mostly Dog & Cat </p>
+                </div>
+            </div>
+
+            <section class="dashboard-grid" aria-label="Chatbot management charts">
+                <article class="chart-panel chart-panel-wide">
+                    <div class="panel-head">
+                        <h3>Total Consultations and Inquiry</h3>
+                        <select id="sourceFilter" class="panel-select" aria-label="Source filter">
+                            <option value="all">All Sources</option>
+                            <option value="consultation">Consultation</option>
+                            <option value="inquiry">Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="chart-canvas-wrap chart-canvas-tall">
+                        <canvas id="consultationInquiryChart" aria-label="Consultation and inquiry trend chart"></canvas>
+                    </div>
+                </article>
+
+                <article class="chart-panel">
+                    <div class="panel-head">
+                        <h3>Inquiry Type Distribution</h3>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="inquiryTypeChart" aria-label="Inquiry type distribution chart"></canvas>
+                    </div>
+                </article>
+
+                <article class="chart-panel location-panel" aria-label="User location analysis panel">
+                    <div class="panel-head">
+                        <h3>User Location (Barangay Analysis)</h3>
+                        <a href="#" class="panel-link">View Detailed Map</a>
+                    </div>
+                    <div class="location-body">
+                        <div class="map-mock" aria-hidden="true">
+                            <div class="heat heat-1"></div>
+                            <div class="heat heat-2"></div>
+                            <div class="heat heat-3"></div>
+                        </div>
+                        <ul class="location-legend" id="locationLegend"></ul>
+                    </div>
+                </article>
+
+                <article class="chart-panel">
+                    <div class="panel-head">
+                        <h3>Most Common Symptoms</h3>
+                        <select id="petTypeFilter" class="panel-select" aria-label="Pet type filter">
+                            <option value="all">Pet Type</option>
+                            <option value="dog">Dog</option>
+                            <option value="cat">Cat</option>
+                        </select>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="symptomsChart" aria-label="Most common symptoms chart"></canvas>
+                    </div>
+                </article>
+            </section>
+        </div>
+    </div>
+
+    <script src="/Vet-side/JS/ChatbotManagement.js"></script>
+</body>
+</html>
