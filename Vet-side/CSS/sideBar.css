@@ -29,6 +29,11 @@
     margin-left: calc(var(--sidebar-width-expanded) + var(--sidebar-main-gap));
     width: calc(100% - (var(--sidebar-width-expanded) + var(--sidebar-main-gap) + var(--shell-gap)));
 }
+
+.sidebar.expanded ~ .right-side {
+    margin-left: calc(var(--sidebar-width-expanded) + var(--sidebar-main-gap));
+    width: calc(100% - (var(--sidebar-width-expanded) + var(--sidebar-main-gap) + var(--shell-gap)));
+}
 .sidebar {
     width: var(--sidebar-width-collapsed);
     height: calc(100vh - (var(--shell-gap) * 2));
@@ -218,8 +223,10 @@
 
     .sidebar ~ .mainContent,
     .sidebar ~ .right-content,
+    .sidebar ~ .right-side,
     .sidebar.expanded ~ .mainContent,
-    .sidebar.expanded ~ .right-content {
+    .sidebar.expanded ~ .right-content,
+    .sidebar.expanded ~ .right-side {
         margin-left: 0 !important;
         width: 100% !important;
     }

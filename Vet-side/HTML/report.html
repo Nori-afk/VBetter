@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VBETTER - Reports</title>
+    <link rel="stylesheet" href="/Vet-side/CSS/sideBar.css">
+    <link rel="stylesheet" href="/Vet-side/CSS/report.css">
+</head>
+<body>
+    <div class="main-holder">
+       <div class="sidebar">
+            <div class="sidebar-header">
+               
+                <div class="logo"><img src="../Images/logo.png" alt="VBETTER Logo"></div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" title="Dashboard">
+                    <img src="/Vet-side/Images/home.png" class="nav-icon" alt="Dashboard-icon">
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="appointment.html" class="nav-item" title="Patients">
+                    <img src="/Vet-side/Images/paw.svg" class="nav-icon" alt="Patient_record-icon">
+                    <span class="nav-label">Appointment Management</span>
+                </a>
+                <a href="patientRecords.html" class="nav-item" title="Appointments">
+                    <img src="/Vet-side/Images/n.svg" class="nav-icon" alt="Appointment-icon">
+                    <span class="nav-label">Patient Records</span>
+                </a>
+                <a href="#" class="nav-item" title="Reports">
+                    <img src="/Vet-side/Images/graph.svg" class="nav-icon" alt="Reports-icon">
+                    <span class="nav-label">Report</span>
+                </a>
+                 <a href="#" class="nav-item" title="Disease_Analytics">
+                    <img src="/Vet-side/Images/graph2.svg" class="nav-icon" alt="Disease Analytics-logo ">
+                    <span class="nav-label">Disease Analytics</span>
+                </a>
+                  <a href="#" class="nav-item" title="lost_&_found">
+                    <img src="/Vet-side/Images/lostandFound.svg" class="nav-icon" alt="Lost and Found-logo" >
+                    <span class="nav-label">Lost And Found</span>
+                </a>
+                  <a href="#" class="nav-item" title="chatbot_insights">
+                    <img src="/Vet-side/Images/chatbot.svg" class="nav-icon" alt="Chatbot-logo">
+                    <span class="nav-label">Chatbot Management</span>
+                </a>
+                  <a href="#" class="nav-item" title="Mass_Vaccine">
+                    <img src="/Vet-side/Images/vaccine.svg" class="nav-icon" alt="Vaccine-logo">
+                    <span class="nav-label">Mass Vaccination</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <img src="https://via.placeholder.com/40" alt="Profile" class="profile-pic">
+                <span class="nav-label">Mass Vaccination</span>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="report-app" id="report-app">
+                <section class="report-shell">
+                    <header class="report-hero">
+                        <div class="report-hero-copy">
+                            <h1 >Reports</h1>
+                            <p class="report-eyebrow">Detailed overview of clinical data and patient statistics.</p>
+                        </div>
+                    </header>
+
+                    <section class="metric-grid" aria-label="Report summary metrics">
+                        <article class="metric-card">
+                            <div class="metric-head">
+                                <span class="metric-label">Total Patients This Month</span>
+                                <span class="metric-icon">i</span>
+                            </div>
+                            <strong class="metric-value" id="metric-total">120</strong>
+                            <p class="metric-note" id="metric-total-note">2% higher compared to last month</p>
+                        </article>
+
+                        <article class="metric-card">
+                            <div class="metric-head">
+                                <span class="metric-label">Most Common Disease</span>
+                                <span class="metric-icon">i</span>
+                            </div>
+                            <strong class="metric-title" id="metric-disease">Canine Parvovirus</strong>
+                            <p class="metric-note" id="metric-disease-note">Mostly Dogs &amp; Cats</p>
+                        </article>
+
+                        <article class="metric-card">
+                            <div class="metric-head">
+                                <span class="metric-label">Most Active Barangay</span>
+                                <span class="metric-icon">i</span>
+                            </div>
+                            <strong class="metric-title" id="metric-barangay">Tangos</strong>
+                            <p class="metric-note" id="metric-barangay-note">Barangay Matang Tubig is 2nd Place</p>
+                        </article>
+                    </section>
+
+                    <section class="toolbar" aria-label="Report controls">
+                        <div class="toolbar-group">
+                            <div class="filter-wrap">
+                                <button type="button" class="toolbar-btn toolbar-btn-light" id="filter-button" aria-expanded="false" aria-controls="filter-popover">
+                                    <img src="/Vet-side/Images/filter.svg" alt="Filter-icon">
+                                    Filter
+                                </button>
+                                <div class="filter-popover" id="filter-popover" hidden>
+                                    <div class="popover-row">
+                                        <label class="popover-label" for="date-type">Date Type</label>
+                                        <select id="date-type" class="popover-select">
+                                            <option value="month">This Month</option>
+                                            <option value="week">This Week</option>
+                                            <option value="today">Today</option>
+                                            <option value="all">All Dates</option>
+                                        </select>
+                                    </div>
+                                    <div class="popover-row">
+                                        <label class="popover-label" for="report-category">Report Category</label>
+                                        <select id="report-category" class="popover-select">
+                                            <option value="all">All Categories</option>
+                                            <option value="canine">Canine</option>
+                                            <option value="feline">Feline</option>
+                                            <option value="livestock">Livestock</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="popover-done" id="filter-done">Done</button>
+                                </div>
+                            </div>
+                            <button type="button" class="toolbar-btn toolbar-btn-light" id="sort-button">
+                                <img src="/Vet-side/Images/sort.svg" alt="Sort icon" class="btn-icon">
+                                Sort
+                            </button>
+                        </div>
+
+                        <div class="toolbar-group toolbar-group-end">
+                            <button type="button" class="toolbar-btn toolbar-btn-primary" id="export-button">
+                               <img src="/Vet-side/Images/save.svg" alt="Export icon" class="btn-icon">
+                                Export
+                            </button>
+                        </div>
+                    </section>
+
+                    <section class="report-table-card" aria-label="Patient report table">
+                        <div class="table-wrap">
+                            <table class="report-table">
+                                <thead>
+                                    <tr>
+                                        <th>Patient ID</th>
+                                        <th>Owner Name</th>
+                                        <th>Contact Number</th>
+                                        <th>Pet Name</th>
+                                        <th>Pet Type</th>
+                                        <th>Barangay</th>
+                                        <th>Sex</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-table-body"></tbody>
+                            </table>
+                        </div>
+
+                        <footer class="report-footer">
+                            <p id="report-summary">Displaying 0 of 0 Patients</p>
+                            <div class="pagination" id="pagination"></div>
+                        </footer>
+                    </section>
+                </section>
+            </div>
+
+            <div class="modal-overlay" id="export-modal-overlay" hidden>
+                <section class="export-modal" role="dialog" aria-modal="true" aria-labelledby="export-modal-title">
+                    <button type="button" class="modal-close" id="export-close" aria-label="Close export modal">&times;</button>
+                    <header class="export-header">
+                        <h2 id="export-modal-title">Export As</h2>
+                        <p>Select your preferred file format for clinic records.</p>
+                    </header>
+
+                    <div class="export-options" role="radiogroup" aria-label="Export format">
+                        <button type="button" class="export-option active" data-format="pdf" aria-pressed="true">
+                            <span class="export-icon export-icon-pdf">PDF</span>
+                            <span class="export-copy">
+                                <strong>PDF Document</strong>
+                                <small>High-fidelity layout, ideal for printing and formal sharing.</small>
+                            </span>
+                            <span class="export-radio" aria-hidden="true"></span>
+                        </button>
+
+                        <button type="button" class="export-option" data-format="csv" aria-pressed="false">
+                            <span class="export-icon export-icon-csv">CSV</span>
+                            <span class="export-copy">
+                                <strong>CSV Spreadsheet</strong>
+                                <small>Raw data format for Excel or clinical data analysis.</small>
+                            </span>
+                            <span class="export-radio" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <div class="export-actions">
+                        <button type="button" class="toolbar-btn toolbar-btn-light export-cancel" id="export-cancel">Cancel</button>
+                        <button type="button" class="toolbar-btn toolbar-btn-primary export-download" id="export-download">Download</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Vet-side/JS/sidebar.js"></script>
+    <script src="/Vet-side/JS/report.js"></script>
+</body>
+</html>

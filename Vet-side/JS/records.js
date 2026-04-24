@@ -291,19 +291,19 @@ function renderPatientInfoTab(record) {
 		<div class="detail-panel-grid">
 			<article class="detail-summary-card">
 				<div class="summary-heading-row">
-					<div>
+					<div class="KPI-normal">
 						<p class="summary-label">TOTAL VISITS</p>
 						<h3>${escapeHtml(record.recordCount)}</h3>
 					</div>
-					<div>
+					<div class="KPI-normal">
 						<p class="summary-label">LAST VISIT</p>
 						<h3>${escapeHtml(record.lastVisit)}</h3>
 					</div>
-					<div>
+					<div class="KPI-green">
 						<p class="summary-label">HEALTH STATUS</p>
 						<div class="summary-inline status-ok"><span class="status-dot"></span>${escapeHtml(record.healthStatus)}</div>
 					</div>
-					<div>
+					<div class="KPI-red">
 						<p class="summary-label">ALERTS</p>
 						<div class="summary-inline status-alert">${escapeHtml(record.alert)}</div>
 					</div>
@@ -312,29 +312,43 @@ function renderPatientInfoTab(record) {
 
 			<div class="detail-two-column">
 				<article class="info-card detail-info-card">
-					<h3>Physical Characteristics</h3>
-					<div class="info-list compact-grid">
-						<div class="info-row"><strong>Date of Birth</strong><span>${escapeHtml(record.dateOfBirth || record.visitDate)}</span></div>
-						<div class="info-row"><strong>Age</strong><span>${escapeHtml(record.age)}</span></div>
-						<div class="info-row"><strong>Color / Markings</strong><span>${escapeHtml(record.colorMarkings)}</span></div>
-						<div class="info-row"><strong>Weight</strong><span>${escapeHtml(record.weight)}</span></div>
+					<div class="detail-header">
+						<img src="/Vet-side/Images/info.svg" alt="Physical information">
+						<h3>Physical Characteristics</h3>
 					</div>
+					<div class="informs">
+					<div class="top">
+						<div class="info-row"><strong>Date of Birth</strong>
+							<span>${escapeHtml(record.dateOfBirth || record.visitDate)}
+							</span></div>
+						<div class="info-row"><strong>Age</strong>
+							<span>${escapeHtml(record.age)}
+							</span></div>
+						</div>
+						<div class="bottom">
+						<div class="info-row"><strong>Color / Markings</strong>
+							<span>${escapeHtml(record.colorMarkings)}
+							</span></div>
+						<div class="info-row"><strong>Weight</strong>
+							<span>${escapeHtml(record.weight)}
+							</span></div>
+						</div>
+						</div>
 				</article>
 
 				<article class="info-card detail-info-card">
 					<h3>Ownership Information</h3>
 					<div class="owner-header-mini">
-						<div class="owner-avatar">${escapeHtml(record.ownerName.slice(0, 1))}</div>
+						<div class="owner-avatar">${escapeHtml(record.ownerName.slice(0, 1).toUpperCase())}</div>
 						<div>
 							<strong>${escapeHtml(record.ownerName)}</strong>
-							<p class="muted">Primary Owner</p>
+							<p class="muted">Primary Owner • Member since 2019</p>
 						</div>
 					</div>
 					<div class="info-list">
 						<div class="info-row"><strong>Phone Number</strong><span>${escapeHtml(record.phone)}</span></div>
 						<div class="info-row"><strong>Email Address</strong><span>${escapeHtml(record.email)}</span></div>
-						<div class="info-row"><strong>Residential Address</strong><span>${escapeHtml(record.address)}</span></div>
-						<div class="info-row"><strong>Location</strong><span>${escapeHtml(record.location || record.address)}</span></div>
+						<div class="info-row full-row"><strong>Residential Address</strong><span>${escapeHtml(record.address)}</span></div>
 					</div>
 				</article>
 			</div>
@@ -349,6 +363,7 @@ function renderPatientInfoTab(record) {
 						<p class="summary-label">VISIT DETAILS</p>
 						<div class="info-list">
 							<div class="info-row"><strong>Visit Date</strong><span>${formatDate(record.visitDate)}</span></div>
+							<div class="info-row"><strong>Last Visit Date</strong><span>${escapeHtml(record.lastVisit)}</span></div>
 							<div class="info-row"><strong>Case Category</strong><span>${escapeHtml(record.category)}</span></div>
 							<div class="info-row"><strong>Diagnosis</strong><span>${escapeHtml(record.diagnosis)}</span></div>
 						</div>
@@ -358,12 +373,14 @@ function renderPatientInfoTab(record) {
 						<p class="detail-paragraph">${escapeHtml(record.symptoms)}</p>
 						<p class="summary-label">TREATMENT</p>
 						<p class="detail-paragraph">${escapeHtml(record.treatment)}</p>
+						<span class="emergency-pill">Emergency</span>
 					</div>
 					<div>
 						<p class="summary-label">PRESCRIBED MEDICATIONS</p>
-						<div class="medication-list">
-							${(Array.isArray(record.medications) ? record.medications : []).map((medication) => `<span class="med-pill">${escapeHtml(medication)}</span>`).join('') || '<span class="muted">No medications listed.</span>'}
+						<div class="medication-list stacked medication-list-panel">
+							${(Array.isArray(record.medications) ? record.medications : []).map((medication) => `<span class="med-pill med-pill-row"><span>${escapeHtml(medication)}</span><span class="med-status">ACTIVE</span></span>`).join('') || '<span class="muted">No medications listed.</span>'}
 						</div>
+						<p class="followup-note">Follow up date: ${formatDate(record.followUpDate)}</p>
 					</div>
 				</div>
 			</article>
@@ -479,7 +496,7 @@ function renderList() {
 						<p>Manage patient profiles, clinical notes, follow-ups, and record actions from one place.</p>
 					</div>
 					<div class="hero-actions">
-						<button type="button" class="btn btn-accent" data-nav="add"><img src="/Vet-side/Images/add.png" alt="icon"> Add New Patient</button>
+						<button type="button" class="btn btn-accent" data-nav="add"><img src="/Vet-side/Images/add.svg" alt="icon"> Add New Patient</button>
 					</div>
 				</div>
 			</header>
@@ -609,21 +626,26 @@ function buildBlankRecord(prefill = {}) {
 function renderAdd(record) {
 	const data = record || buildBlankRecord();
 	const hasContext = Boolean(record);
+	const pageTitle = hasContext ? 'Add New Record' : 'Add New Patient';
+	const submitLabel = hasContext ? 'Add Record' : 'Add Patient';
 	return `
 		<section class="records-shell">
 			<div class="section-head">
 				<div>
-					<h2>Add New Record</h2>
+					<button type="button" class="btn btn-soft" data-nav="list"><img src="/Vet-side/Images/back.svg" alt="Back">Back to records</button>
+					<h2>${pageTitle}</h2>
 					<p>${hasContext ? `Create a new clinical entry for ${escapeHtml(data.petName)}.` : 'Register a new patient record and capture the first clinical note.'}</p>
 				</div>
-				<div class="hero-actions">
-					<button type="button" class="btn btn-soft" data-nav="list">Back to records</button>
-				</div>
+				<div class="hero-actions"></div>
 			</div>
 
 			<form id="record-form" class="form-layout">
 				<article class="form-card">
+					<div class="detailed-header">
+					<img src="/Vet-side/Images/paw-green.svg" alt="Pet-icon">
+					
 					<h3>Pet Information</h3>
+					</div>
 					<div class="form-grid">
 						<div class="field span-2">
 							<label for="pet-name">Pet name</label>
@@ -665,7 +687,10 @@ function renderAdd(record) {
 				</article>
 
 				<article class="form-card">
+				<div class="detailed-header">
+					<img src="/Vet-side/Images/owner.svg" alt="Owner-icon">
 					<h3>Owner Information</h3>
+					</div>
 					<div class="form-grid">
 						<div class="field span-2">
 							<label for="owner-name">Owner name</label>
@@ -687,7 +712,10 @@ function renderAdd(record) {
 				</article>
 
 				<article class="form-card span-2">
+				<div class="detailed-header">
+					<img src="/Vet-side/Images/medicine.svg" alt="Visit-icon">
 					<h3>Visit Details</h3>
+					</div>
 					<div class="form-grid">
 						<div class="field span-2">
 							<label for="visit-title">Visit title</label>
@@ -746,7 +774,7 @@ function renderAdd(record) {
 					</div>
 					<div class="form-footer">
 						<button type="button" class="btn btn-soft" data-nav="list">Cancel</button>
-						<button type="submit" class="btn btn-primary">Save Record</button>
+						<button type="submit" class="btn btn-primary">${submitLabel} <img src="/Vet-side/Images/plus.svg" alt="add"></button>
 					</div>
 				</article>
 			</form>
@@ -774,7 +802,7 @@ function renderDetail(record) {
 	return `
 		<section class="records-shell">
 			<div class="profile-topbar">
-				<button type="button" class="back-link" data-nav="list">&#8592; Back to Patient Records</button>
+				<button type="button" class="back-link" data-nav="list"><img src="/Vet-side/Images/back.svg" alt="Back"> Back to Patient Records</button>
 			</div>
 
 			<section class="detail-shell">
@@ -783,7 +811,10 @@ function renderDetail(record) {
 						<div class="detail-title">
 							<div class="detail-avatar">${escapeHtml(record.petName.slice(0, 1))}</div>
 							<div>
-								<h2>${escapeHtml(record.petName)}</h2>
+								<div class="pet-name-row">
+									<h2>${escapeHtml(record.petName)}</h2>
+									<button type="button" class="pet-edit-trigger" data-action="edit" data-id="${record.id}" aria-label="Edit patient profile">${ICONS.pencil}</button>
+								</div>
 								<div class="detail-badges">
 									<span class="tag neutral">${escapeHtml(record.breed)}</span>
 									<span class="tag info">${escapeHtml(record.species)}</span>
@@ -792,7 +823,7 @@ function renderDetail(record) {
 							</div>
 						</div>
 						<div class="detail-actions">
-							<button type="button" class="btn btn-primary" data-nav="add" data-id="${record.id}">${ICONS.plus} Add New Record</button>
+							<button type="button" class="btn btn-primary" data-nav="add" data-id="${record.id}"><img src="/Vet-side/Images/addView.svg" alt="Add New Record"> Add New Record</button>
 							<button type="button" class="more-btn" aria-label="More actions">&#8230;</button>
 						</div>
 					</div>
@@ -1147,6 +1178,7 @@ function bindGlobalEvents() {
 
 		if (action === 'view') navigate('view', { id }, false);
 		if (action === 'add-record') navigate('add', { id }, false);
+		if (action === 'edit') openEditModal(id);
 		if (action === 'delete') openDeleteModal(id);
 	});
 
