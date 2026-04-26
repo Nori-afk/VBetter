@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VBETTER | Profile</title>
+    <link rel="stylesheet" href="/Vet-side/CSS/sideBar.css">
+    <link rel="stylesheet" href="/Vet-side/CSS/profile.css">
+    <script src="/Vet-side/JS/sidebar.js" defer></script>
+</head>
+<body>
+    <div class="main-holder profile-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo"><img src="../Images/logo.png" alt="VBETTER Logo"></div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item" title="Dashboard">
+                    <img src="/Vet-side/Images/home-notactive.svg" class="nav-icon" alt="Dashboard icon">
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="appointment.html" class="nav-item" title="Appointments">
+                    <img src="/Vet-side/Images/n.svg" class="nav-icon" alt="Appointment management icon">
+                    <span class="nav-label">Appointment Management</span>
+                </a>
+                <a href="patientRecords.html" class="nav-item" title="Patient Records">
+                    <img src="/Vet-side/Images/paw.svg" class="nav-icon" alt="Patient records icon">
+                    <span class="nav-label">Patient Records</span>
+                </a>
+                <a href="report.html" class="nav-item" title="Reports">
+                    <img src="/Vet-side/Images/graph.svg" class="nav-icon" alt="Reports icon">
+                    <span class="nav-label">Report</span>
+                </a>
+                <a href="DiseaseAnalytics.html" class="nav-item" title="Disease Analytics">
+                    <img src="/Vet-side/Images/graph2.svg" class="nav-icon" alt="Disease analytics icon">
+                    <span class="nav-label">Disease Analytics</span>
+                </a>
+                <a href="Lost&Found.html" class="nav-item" title="Lost and Found">
+                    <img src="/Vet-side/Images/lostandFound.svg" class="nav-icon" alt="Lost and found icon">
+                    <span class="nav-label">Lost And Found</span>
+                </a>
+                <a href="chatbotmanagement.html" class="nav-item" title="Chatbot Management">
+                    <img src="/Vet-side/Images/chatbot.svg" class="nav-icon" alt="Chatbot management icon">
+                    <span class="nav-label">Chatbot Management</span>
+                </a>
+                <a href="MassVacc.html" class="nav-item" title="Mass Vaccination">
+                    <img src="/Vet-side/Images/vaccine.svg" class="nav-icon" alt="Mass vaccination icon">
+                    <span class="nav-label">Mass Vaccination</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer"></div>
+        </aside>
+
+        <main class="profile-main">
+            <section class="profile-hero card">
+                <img src="https://i.pravatar.cc/150?img=47" alt="Dr. Kizea Bien Igaya" class="hero-avatar">
+                <div>
+                    <h1>Dr. Kizea Bien Igaya</h1>
+                    <p>Vet since 2021</p>
+                </div>
+            </section>
+
+            <section class="profile-kpis" aria-label="Profile KPI cards">
+                <article class="kpi-card card">
+                    <p>Patients Today</p>
+                    <strong>24</strong>
+                    <small>+12% vs last week</small>
+                </article>
+                <article class="kpi-card card">
+                    <p>Surgery Performed</p>
+                    <strong>156</strong>
+                    <small>All-time records</small>
+                </article>
+                <article class="kpi-card card">
+                    <p>Avg. Treatment Time</p>
+                    <strong>45m</strong>
+                    <small>15m lower than average</small>
+                </article>
+                <article class="kpi-card card">
+                    <p>Satisfaction Rate</p>
+                    <strong>4.9</strong>
+                    <small>+0.6 from last month</small>
+                </article>
+            </section>
+
+            <section class="profile-panel card">
+                <div class="panel-head">
+                    <h2>Profile Information</h2>
+                    <button class="save-btn">Save Changes</button>
+                </div>
+                <div class="form-grid">
+                    <label>Full Name<input type="text" value="Dr. Kizea Bien Igaya"></label>
+                    <label>Email Address<input type="email" value="dr.kizea@gmail.com"></label>
+                    <label>Contact Number<input type="text" value="+63 961 123 3456"></label>
+                    <label>Role<input type="text" value="Vet III"></label>
+                </div>
+            </section>
+
+            <section class="profile-panel card">
+                <h2>Security</h2>
+                <p>Change password and two-factor settings.</p>
+                <div class="security-actions">
+                    <button class="save-btn">Update Password</button>
+                    <button class="save-btn alt">Manage 2FA</button>
+                </div>
+            </section>
+
+            <section class="profile-panel card">
+                <h2>Notification Preferences</h2>
+                <p>Choose what updates you receive.</p>
+                <div class="checks">
+                    <label><input type="checkbox" checked> Lost/Found Alerts</label>
+                    <label><input type="checkbox" checked> Appointment Reminders</label>
+                    <label><input type="checkbox"> New Chatbot Updates</label>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
