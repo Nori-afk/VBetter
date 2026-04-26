@@ -52,6 +52,16 @@
     transition: width 0.28s ease;
 }
 
+.mainContent,
+.right-content,
+.right-side,
+.content-holder,
+.lf-main,
+.da-main,
+.mass-vacc-main {
+    transition: margin-left 0.28s ease, width 0.28s ease;
+}
+
 .sidebar.expanded {
     width: var(--sidebar-width-expanded);
 }
@@ -60,7 +70,30 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 8px;
     margin-bottom: 14px;
+}
+
+.sidebar-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--white);
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 1;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.46);
 }
 
 .logo {
@@ -143,10 +176,83 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    padding-bottom: 6px;
 }
 
 .sidebar.expanded .sidebar-footer {
+    justify-content: stretch;
+}
+
+.sidebar-profile-card {
+    width: 50px;
+    min-height: 50px;
+    border-radius: 0 0 24px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow: hidden;
+    border: none;
+    background: transparent;
+    padding: 14px 0 18px;
+    transition: background 0.28s ease, border-color 0.28s ease, gap 0.28s ease, padding 0.28s ease;
+    cursor: pointer;
+}
+
+.sidebar.expanded .sidebar-profile-card {
+    width: 100%;
+    min-height: 51px;
+    border-radius: 16px;
     justify-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+    background: #0f9540;
+    border-color: #39d263;
+    border: 1px solid #39d263;
+}
+
+.sidebar-profile-avatar {
+    width: 51px;
+    height: 51px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.sidebar.expanded .sidebar-profile-avatar {
+    width: 48px;
+    height: 48px;
+    border: 0;
+}
+
+.sidebar-profile-meta {
+    display: none;
+    min-width: 0;
+    color: #ffffff;
+}
+
+.sidebar.expanded .sidebar-profile-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-profile-name {
+    font-size: 8px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.sidebar.expanded .sidebar-profile-name {
+    font-size: 12px;
+}
+
+.sidebar-profile-role {
+    font-size: 7px;
+    opacity: 0.94;
+}
+
+.sidebar.expanded .sidebar-profile-role {
+    font-size: 10px;
 }
 
 .profile-pic {
@@ -183,6 +289,12 @@
     .sidebar-header {
         margin-bottom: 0;
         justify-content: flex-start;
+    }
+
+    .sidebar-toggle {
+        display: inline-flex;
+        width: 36px;
+        height: 36px;
     }
 
     .logo {

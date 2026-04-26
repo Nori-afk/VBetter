@@ -1,100 +1,136 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.querySelector('.sidebar');
-    const navItems = document.querySelectorAll('.nav-item');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const dashboardContent = document.getElementById('dashboard-content');
-    const moduleContent = document.getElementById('module-content');
-
-    if (!sidebar || !navItems.length) return;
-
-    function setActiveNav(activeItem) {
-        navItems.forEach((nav) => nav.classList.remove('active'));
-        activeItem.classList.add('active');
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.querySelector(".sidebar");
+    if (!sidebar) {
+        return;
+    }
+    const navRoot = sidebar.querySelector(".sidebar-nav");
+    if (!navRoot) {
+        return;
     }
 
-    function showDashboard() {
-        if (dashboardContent) dashboardContent.hidden = false;
-        if (moduleContent) {
-            moduleContent.hidden = true;
-            moduleContent.innerHTML = '';
+    const navItems = Array.from(navRoot.querySelectorAll(".nav-item"));
+    if (!navItems.length) {
+        return;
+    }
+
+    const routeByLabel = {
+        dashboard: "index.html",
+        "appointment management": "appointment.html",
+        "patient records": "patientRecords.html",
+        report: "report.html",
+        "disease analytics": "DiseaseAnalytics.html",
+        "lost and found": "Lost&Found.html",
+        "chatbot management": "chatbotmanagement.html",
+        "mass vaccination": "MassVacc.html"
+    };
+
+    const sidebarHeader = sidebar.querySelector(".sidebar-header");
+    let sidebarToggle = document.getElementById("sidebar-toggle");
+    if (!sidebarToggle && sidebarHeader) {
+        sidebarToggle = document.createElement("button");
+        sidebarToggle.type = "button";
+        sidebarToggle.className = "sidebar-toggle";
+        sidebarToggle.id = "sidebar-toggle";
+        sidebarToggle.setAttribute("aria-label", "Toggle sidebar menu");
+        sidebarToggle.innerHTML = "&#9776;";
+        sidebarHeader.prepend(sidebarToggle);
+    }
+
+    const footer = sidebar.querySelector(".sidebar-footer");
+    if (footer) {
+        footer.innerHTML = `
+            <article class="sidebar-profile-card" aria-label="Veterinarian profile">
+                <img src="https://i.pravatar.cc/120?img=47" alt="Dr. Kizea Igaya" class="sidebar-profile-avatar">
+                <div class="sidebar-profile-meta">
+                    <strong class="sidebar-profile-name">Dr. Kizea Bien Igaya</strong>
+                    <span class="sidebar-profile-role">Vet III</span>
+                </div>
+            </article>
+        `;
+
+        const profileCard = footer.querySelector(".sidebar-profile-card");
+        if (profileCard) {
+            profileCard.addEventListener("click", () => {
+                if (!window.location.pathname.toLowerCase().endsWith("/profile.html") && !window.location.pathname.toLowerCase().endsWith("profile.html")) {
+                    window.location.href = "profile.html";
+                }
+            });
         }
     }
 
-    function showModule(label) {
-        if (!moduleContent) return;
-        if (dashboardContent) dashboardContent.hidden = true;
-        moduleContent.hidden = false;
-        moduleContent.innerHTML = `
-            <section class="module-card">
-                <h2>${label}</h2>
-                <p>This section is now connected to the sidebar and ready for its dedicated content.</p>
-                <button type="button" class="module-back-btn" data-go-dashboard="true">Back to Dashboard</button>
-            </section>
-        `;
-    }
-
-    // Desktop expand/collapse behavior
-    sidebar.addEventListener('click', (event) => {
-        if (window.innerWidth <= 768) return;
-        if (event.target.closest('.nav-item') || event.target.closest('#sidebar-toggle')) return;
-        sidebar.classList.toggle('expanded');
-    });
-
-    // Mobile menu toggle
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            sidebar.classList.toggle('mobile-open');
-        });
-    }
+    const currentFile = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
     navItems.forEach((item) => {
-        item.addEventListener('click', (event) => {
-            const href = item.getAttribute('href') || '';
-            const isInPageItem = href === '#' || href.startsWith('#');
+        const rawLabel = item.querySelector(".nav-label")?.textContent?.trim().toLowerCase() || "";
+        const route = routeByLabel[rawLabel];
+        if (route) {
+            item.setAttribute("href", route);
+        }
 
-            setActiveNav(item);
+        const targetFile = (item.getAttribute("href") || "").split("/").pop().toLowerCase();
+        item.classList.toggle("active", Boolean(targetFile) && targetFile === currentFile);
 
-            if (!isInPageItem) {
-                return;
-            }
-
-            event.preventDefault();
-            const label = item.querySelector('.nav-label')?.textContent?.trim() || item.getAttribute('title') || 'Module';
-            if (label.toLowerCase().includes('dashboard')) {
-                showDashboard();
-            } else {
-                showModule(label);
-            }
-
+        item.addEventListener("click", () => {
             if (window.innerWidth <= 768) {
-                sidebar.classList.remove('mobile-open');
+                sidebar.classList.remove("mobile-open");
             }
         });
     });
 
-    if (moduleContent) {
-        moduleContent.addEventListener('click', (event) => {
-            const backBtn = event.target.closest('[data-go-dashboard]');
-            if (!backBtn) return;
+    sidebar.addEventListener("click", (event) => {
+        if (window.innerWidth <= 768) {
+            return;
+        }
+        if (event.target.closest(".nav-item") || event.target.closest("#sidebar-toggle")) {
+            return;
+        }
+        sidebar.classList.toggle("expanded");
+        syncToggleState();
+    });
 
-            const dashboardNav = Array.from(navItems).find((item) => {
-                const text = item.querySelector('.nav-label')?.textContent?.trim().toLowerCase() || '';
-                return text.includes('dashboard');
-            });
+    function syncToggleState() {
+        if (!sidebarToggle) {
+            return;
+        }
+        sidebarToggle.setAttribute("aria-expanded", sidebar.classList.contains("expanded") ? "true" : "false");
+    }
 
-            if (dashboardNav) setActiveNav(dashboardNav);
-            showDashboard();
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle("mobile-open");
+                return;
+            }
+            sidebar.classList.toggle("expanded");
+            syncToggleState();
         });
     }
 
-    // Tab switching
-    const tabs = document.querySelectorAll('.tab');
+    document.addEventListener("click", (event) => {
+        if (window.innerWidth > 768) {
+            return;
+        }
+        if (!sidebar.contains(event.target)) {
+            sidebar.classList.remove("mobile-open");
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove("mobile-open");
+        }
+        syncToggleState();
+    });
+
+    syncToggleState();
+
+    const tabs = document.querySelectorAll(".tab");
     tabs.forEach((tab) => {
-        tab.addEventListener('click', function () {
-            tabs.forEach((t) => t.classList.remove('active'));
-            this.classList.add('active');
+        tab.addEventListener("click", function () {
+            tabs.forEach((otherTab) => otherTab.classList.remove("active"));
+            this.classList.add("active");
         });
     });
 });
