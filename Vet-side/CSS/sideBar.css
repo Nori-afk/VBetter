@@ -227,6 +227,11 @@
 
 .sidebar-profile-meta {
     display: none;
+    width: 0;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
     min-width: 0;
     color: #ffffff;
 }
@@ -234,6 +239,17 @@
 .sidebar.expanded .sidebar-profile-meta {
     display: flex;
     flex-direction: column;
+    width: auto;
+    max-width: 120px;
+    opacity: 1;
+    visibility: visible;
+    overflow: hidden;
+}
+
+.sidebar-profile-name,
+.sidebar-profile-role {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sidebar-profile-name {

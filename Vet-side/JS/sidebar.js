@@ -24,6 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "mass vaccination": "MassVacc.html"
     };
 
+    const swappedIconByLabel = {
+        "appointment management": "/Vet-side/Images/n.svg",
+        "patient records": "/Vet-side/Images/paw.svg"
+    };
+
+    const activeIconCapable = new Set(["paw", "n", "graph", "chatbot", "lostandFound", "calendar"]);
+
     const sidebarHeader = sidebar.querySelector(".sidebar-header");
     let sidebarToggle = document.getElementById("sidebar-toggle");
     if (!sidebarToggle && sidebarHeader) {
@@ -67,8 +74,30 @@ document.addEventListener("DOMContentLoaded", () => {
             item.setAttribute("href", route);
         }
 
+        const icon = item.querySelector(".nav-icon");
+        if (icon && swappedIconByLabel[rawLabel]) {
+            icon.setAttribute("src", swappedIconByLabel[rawLabel]);
+        }
+
         const targetFile = (item.getAttribute("href") || "").split("/").pop().toLowerCase();
-        item.classList.toggle("active", Boolean(targetFile) && targetFile === currentFile);
+        const isActive = Boolean(targetFile) && targetFile === currentFile;
+        item.classList.toggle("active", isActive);
+
+        if (icon) {
+            const source = icon.getAttribute("src") || "";
+            const lastSlash = source.lastIndexOf("/");
+            const folder = lastSlash >= 0 ? source.slice(0, lastSlash + 1) : "";
+            const fileName = lastSlash >= 0 ? source.slice(lastSlash + 1) : source;
+            const dotIndex = fileName.lastIndexOf(".");
+            const baseName = dotIndex >= 0 ? fileName.slice(0, dotIndex) : fileName;
+            const extension = dotIndex >= 0 ? fileName.slice(dotIndex) : "";
+            const normalizedBase = baseName.endsWith("-active") ? baseName.slice(0, -7) : baseName;
+
+            if (activeIconCapable.has(normalizedBase)) {
+                const resolvedName = isActive ? `${normalizedBase}-active${extension}` : `${normalizedBase}${extension}`;
+                icon.setAttribute("src", `${folder}${resolvedName}`);
+            }
+        }
 
         item.addEventListener("click", () => {
             if (window.innerWidth <= 768) {
