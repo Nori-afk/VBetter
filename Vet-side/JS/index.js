@@ -1,5 +1,27 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    const announcementState = {
+        items: [
+            {
+                id: `ANN-${Date.now()}`,
+                title: 'Vaccine Event 1',
+                description: 'Will be in Feb 29, 2025 at barangay tangos',
+                date: '02/29/2025',
+                image: '/Vet-side/Images/Icon.png'
+            }
+        ]
+    };
+
+    const notificationState = {
+        items: [
+            { id: 'N-1', title: 'New Announcement Posted', detail: 'Vaccine Event 1 is now visible to pet owners.', time: 'Just now', read: false },
+            { id: 'N-2', title: 'Pending Appointment Spike', detail: 'Pending queue is up by 12% compared to yesterday.', time: '12 mins ago', read: false },
+            { id: 'N-3', title: 'Reminder', detail: 'Mass vaccination planning window starts tomorrow.', time: '1 hour ago', read: true }
+        ]
+    };
+
+    const modalRoot = ensureDashboardModalRoot();
+
     const calendarEl = document.getElementById('calendar');
     if (calendarEl) {
         const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -261,23 +283,349 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    const notificationBtn = document.getElementById('notification-icon-btn');
+    if (notificationBtn) {
+        notificationBtn.addEventListener('click', function () {
+            openNotificationModal();
+        });
+    }
+
+    const aboutHelpBtn = document.getElementById('about-help-btn');
+    if (aboutHelpBtn) {
+        aboutHelpBtn.addEventListener('click', function () {
+            openAboutHelpModal();
+        });
+    }
+
     // Create announcement button
-    const createAnnounceBtn = Array.from(document.querySelectorAll('.btn-secondary')).find(btn => 
-        btn.textContent.includes('Create Announcement')
-    );
+    const createAnnounceBtn = document.getElementById('create-announcement-btn');
     if (createAnnounceBtn) {
         createAnnounceBtn.addEventListener('click', function() {
-            alert('Create announcement functionality will be implemented here');
+            openAnnouncementEditorModal({ mode: 'create' });
         });
     }
 
     // Manage announcement button
-    const manageAnnounceBtn = Array.from(document.querySelectorAll('.btn-secondary')).find(btn => 
-        btn.textContent.includes('Manage Announcement')
-    );
+    const manageAnnounceBtn = document.getElementById('manage-announcement-btn');
     if (manageAnnounceBtn) {
         manageAnnounceBtn.addEventListener('click', function() {
-            alert('Manage announcement functionality will be implemented here');
+            openManageAnnouncementModal();
+        });
+    }
+
+    function ensureDashboardModalRoot() {
+        let root = document.getElementById('dashboard-modal-root');
+        if (!root) {
+            root = document.createElement('div');
+            root.id = 'dashboard-modal-root';
+            root.hidden = true;
+            document.body.appendChild(root);
+        }
+        return root;
+    }
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function showModal(content, shellClass = '') {
+        modalRoot.innerHTML = `
+            <div class="dash-modal-overlay" role="dialog" aria-modal="true">
+                <section class="dash-modal-shell ${shellClass}">
+                    ${content}
+                </section>
+            </div>
+        `;
+        modalRoot.hidden = false;
+
+        const overlay = modalRoot.querySelector('.dash-modal-overlay');
+        if (overlay) {
+            overlay.addEventListener('click', function (event) {
+                if (event.target === overlay) {
+                    closeModal();
+                }
+            });
+        }
+
+        modalRoot.querySelectorAll('[data-modal-close]').forEach((button) => {
+            button.addEventListener('click', closeModal);
+        });
+    }
+
+    function closeModal() {
+        modalRoot.hidden = true;
+        modalRoot.innerHTML = '';
+    }
+
+    function openNotificationModal() {
+        const unreadCount = notificationState.items.filter((item) => !item.read).length;
+
+        showModal(`
+            <header class="dash-modal-header">
+                <h2>Notification${unreadCount ? ` (${unreadCount})` : ''}</h2>
+                <div class="dash-modal-header-actions">
+                    <button type="button" class="dash-header-action" id="mark-all-read-btn">Mark all as read</button>
+                    <button type="button" class="dash-close-btn" data-modal-close>&times;</button>
+                </div>
+            </header>
+            <div class="dash-modal-content">
+                <div class="dash-notification-list">
+                    ${notificationState.items
+                        .map(
+                            (item) => `
+                            <article class="dash-notification-item ${item.read ? 'read' : 'unread'}" data-notification-id="${escapeHtml(item.id)}">
+                                <h4>${escapeHtml(item.title)}</h4>
+                                <p>${escapeHtml(item.detail)}</p>
+                                <small>${escapeHtml(item.time)}</small>
+                            </article>
+                        `
+                        )
+                        .join('')}
+                </div>
+            </div>
+        `);
+
+        const markAllBtn = document.getElementById('mark-all-read-btn');
+        if (markAllBtn) {
+            markAllBtn.addEventListener('click', () => {
+                notificationState.items.forEach((item) => {
+                    item.read = true;
+                });
+                openNotificationModal();
+            });
+        }
+
+        modalRoot.querySelectorAll('[data-notification-id]').forEach((element) => {
+            element.addEventListener('click', () => {
+                const entry = notificationState.items.find((item) => item.id === element.dataset.notificationId);
+                if (entry) {
+                    entry.read = true;
+                    element.classList.remove('unread');
+                    element.classList.add('read');
+                }
+            });
+        });
+    }
+
+    function openAboutHelpModal() {
+        showModal(`
+            <header class="dash-modal-header">
+                <h2>About Us & Help</h2>
+                <button type="button" class="dash-close-btn" data-modal-close>&times;</button>
+            </header>
+            <div class="dash-modal-content">
+                <section class="dash-help-section">
+                    <h3>About VBetter</h3>
+                    <p>VBetter is a veterinary operations dashboard for appointments, records, vaccination planning, chatbot insights, and lost & found management.</p>
+                </section>
+                <section class="dash-help-section">
+                    <h3>Quick Help</h3>
+                    <ul class="dash-help-list">
+                        <li>Use <strong>Create Announcement</strong> to publish advisories for pet owners.</li>
+                        <li>Use <strong>Manage Announcement</strong> to edit or remove existing posts.</li>
+                        <li>Use the sidebar modules to navigate between clinic features.</li>
+                    </ul>
+                </section>
+                <section class="dash-help-section">
+                    <h3>Support Contact</h3>
+                    <p>Email: support@vbetter.local</p>
+                    <p>Hotline: +63 2 8123 4567</p>
+                </section>
+            </div>
+        `);
+    }
+
+    function openAnnouncementEditorModal({ mode, item }) {
+        const isEdit = mode === 'edit';
+        const localState = {
+            title: item?.title || '',
+            description: item?.description || '',
+            image: item?.image || ''
+        };
+
+        showModal(`
+            <header class="dash-modal-header">
+                <h2>${isEdit ? 'Edit Announcement' : 'Create Announcement'}</h2>
+                <button type="button" class="dash-close-btn" data-modal-close>&times;</button>
+            </header>
+            <div class="dash-modal-content">
+                <label class="dash-field-wrap">
+                    <input id="announcement-title" class="dash-input" type="text" placeholder="Title Of Announcement" value="${escapeHtml(localState.title)}">
+                </label>
+                <label class="dash-field-wrap">
+                    <textarea id="announcement-description" class="dash-textarea" placeholder="Description">${escapeHtml(localState.description)}</textarea>
+                </label>
+                <div class="dash-upload-box" id="announcement-upload-box">
+                    ${localState.image ? `<img src="${escapeHtml(localState.image)}" alt="Announcement image preview">` : '<span>Add To Your Post</span>'}
+                </div>
+                <div class="dash-upload-actions">
+                    <button type="button" class="dash-upload-btn" id="announcement-upload-trigger">Add To Your Post</button>
+                    <input type="file" id="announcement-upload-input" accept="image/*" hidden>
+                </div>
+                <button type="button" class="dash-primary-btn" id="announcement-submit-btn">${isEdit ? 'Update' : 'Post'}</button>
+            </div>
+        `);
+
+        const titleInput = document.getElementById('announcement-title');
+        const descriptionInput = document.getElementById('announcement-description');
+        const uploadTrigger = document.getElementById('announcement-upload-trigger');
+        const uploadInput = document.getElementById('announcement-upload-input');
+        const uploadBox = document.getElementById('announcement-upload-box');
+        const submitBtn = document.getElementById('announcement-submit-btn');
+
+        uploadTrigger?.addEventListener('click', () => uploadInput?.click());
+
+        uploadInput?.addEventListener('change', () => {
+            const file = uploadInput.files?.[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                localState.image = String(reader.result);
+                if (uploadBox) {
+                    uploadBox.innerHTML = `<img src="${escapeHtml(localState.image)}" alt="Announcement image preview">`;
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+
+        submitBtn?.addEventListener('click', () => {
+            const title = titleInput?.value.trim() || '';
+            const description = descriptionInput?.value.trim() || '';
+            if (!title || !description) {
+                showNotification('Please fill in title and description first.', 'error');
+                return;
+            }
+
+            localState.title = title;
+            localState.description = description;
+
+            openAnnouncementPostConfirmModal({
+                onConfirm: () => {
+                    if (isEdit && item) {
+                        item.title = localState.title;
+                        item.description = localState.description;
+                        item.image = localState.image || item.image;
+                        openAnnouncementResultModal('Announcement Has Been Updated');
+                    } else {
+                        announcementState.items.unshift({
+                            id: `ANN-${Date.now()}`,
+                            title: localState.title,
+                            description: localState.description,
+                            date: new Date().toLocaleDateString('en-US'),
+                            image: localState.image || '/Vet-side/Images/Icon.png'
+                        });
+                        openAnnouncementResultModal('Announcement Has Been Uploaded');
+                    }
+                }
+            });
+        });
+    }
+
+    function openAnnouncementPostConfirmModal({ onConfirm }) {
+        showModal(`
+            <div class="dash-confirm-box">
+                <div class="dash-confirm-icon">🔒</div>
+                <h3>Are You sure You Want to<br>Post This announcement?</h3>
+                <p>Upon posting the announcement, pet owner can see it in their landing page.</p>
+                <button type="button" class="dash-primary-btn" id="confirm-announcement-btn">Yes</button>
+                <button type="button" class="dash-text-btn" data-modal-close>No</button>
+            </div>
+        `, 'dash-modal-mini');
+
+        const confirmBtn = document.getElementById('confirm-announcement-btn');
+        confirmBtn?.addEventListener('click', () => onConfirm());
+    }
+
+    function openAnnouncementResultModal(title) {
+        showModal(`
+            <div class="dash-confirm-box">
+                <h3>${escapeHtml(title)}</h3>
+                <p>You can now manage the announcement in the Manage Announcement tab.</p>
+                <button type="button" class="dash-primary-btn" data-modal-close>Close</button>
+            </div>
+        `, 'dash-modal-mini');
+    }
+
+    function openManageAnnouncementModal() {
+        showModal(`
+            <header class="dash-modal-header">
+                <h2>Manage Announcement</h2>
+                <button type="button" class="dash-close-btn" data-modal-close>&times;</button>
+            </header>
+            <div class="dash-modal-content">
+                <div class="dash-announcement-list">
+                    ${
+                        announcementState.items.length
+                            ? announcementState.items
+                                  .map(
+                                      (item) => `
+                                <article class="dash-announcement-card">
+                                    <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}">
+                                    <div class="dash-announcement-copy">
+                                        <h4>${escapeHtml(item.title)}</h4>
+                                        <p>${escapeHtml(item.description)}</p>
+                                        <small>Date: ${escapeHtml(item.date)}</small>
+                                    </div>
+                                    <div class="dash-announcement-actions">
+                                        <button type="button" class="dash-icon-btn" data-edit-id="${escapeHtml(item.id)}" aria-label="Edit announcement">
+                                            <img src="/Vet-side/Images/pen.svg" alt="Edit">
+                                        </button>
+                                        <button type="button" class="dash-icon-btn" data-delete-id="${escapeHtml(item.id)}" aria-label="Delete announcement">
+                                            <img src="/Vet-side/Images/trash.svg" alt="Delete">
+                                        </button>
+                                    </div>
+                                </article>
+                            `
+                                  )
+                                  .join('')
+                            : '<p class="dash-empty">No announcements yet.</p>'
+                    }
+                </div>
+            </div>
+        `);
+
+        modalRoot.querySelectorAll('[data-edit-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const target = announcementState.items.find((item) => item.id === button.dataset.editId);
+                if (target) {
+                    openAnnouncementEditorModal({ mode: 'edit', item: target });
+                }
+            });
+        });
+
+        modalRoot.querySelectorAll('[data-delete-id]').forEach((button) => {
+            button.addEventListener('click', () => {
+                openAnnouncementDeleteConfirmModal(button.dataset.deleteId);
+            });
+        });
+    }
+
+    function openAnnouncementDeleteConfirmModal(targetId) {
+        showModal(`
+            <div class="dash-delete-box">
+                <header>
+                    <h3>Delete Announcement?</h3>
+                    <button type="button" class="dash-close-btn" data-modal-close>&times;</button>
+                </header>
+                <p>This action is permanent and cannot be undone.</p>
+                <div class="dash-delete-actions">
+                    <button type="button" class="dash-secondary-btn" data-modal-close>No, Keep</button>
+                    <button type="button" class="dash-primary-btn" id="delete-announcement-confirm-btn">Yes, Delete</button>
+                </div>
+            </div>
+        `, 'dash-modal-mini');
+
+        const deleteBtn = document.getElementById('delete-announcement-confirm-btn');
+        deleteBtn?.addEventListener('click', () => {
+            announcementState.items = announcementState.items.filter((item) => item.id !== targetId);
+            openManageAnnouncementModal();
         });
     }
 
